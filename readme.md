@@ -2,8 +2,8 @@
 
 ## TODO
 
-- [ ] French
-- [ ] Date Input
+- [x] French
+- [x] Date Input
 - [ ] Search Input
 - [ ] GET list of Events from back
 - [ ] POST new Event
