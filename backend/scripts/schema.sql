@@ -1,0 +1,14 @@
+SET NAMES UTF8;
+
+CREATE DATABASE familynote;
+
+USE familynote;
+CREATE TABLE events
+(
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  label VARCHAR(150) NOT NULL,
+  datetime DATETIME NOT NULL,
+  location VARCHAR(150) NOT NULL,
+  description TEXT,
+  file BLOB
+);

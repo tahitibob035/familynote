@@ -1,82 +1,55 @@
 <?php
 
-declare(strict_types=1);
-
-use App\Application\Handlers\HttpErrorHandler;
-use App\Application\Handlers\ShutdownHandler;
-use App\Application\ResponseEmitter\ResponseEmitter;
-use App\Application\Settings\SettingsInterface;
-use DI\ContainerBuilder;
+use App\Model\Database;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Selective\BasePath\BasePathMiddleware;
 use Slim\Factory\AppFactory;
-use Slim\Factory\ServerRequestCreatorFactory;
+use Slim\Exception\HttpNotFoundException;
 
-require __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-// Instantiate PHP-DI ContainerBuilder
-$containerBuilder = new ContainerBuilder();
-
-if (false) { // Should be set to true in production
-	$containerBuilder->enableCompilation(__DIR__ . '/../var/cache');
-}
-
-// Set up settings
-$settings = require __DIR__ . '/../app/settings.php';
-$settings($containerBuilder);
-
-// Set up dependencies
-$dependencies = require __DIR__ . '/../app/dependencies.php';
-$dependencies($containerBuilder);
-
-// Set up repositories
-$repositories = require __DIR__ . '/../app/repositories.php';
-$repositories($containerBuilder);
-
-// Build PHP-DI Container instance
-$container = $containerBuilder->build();
-
-// Instantiate the app
-AppFactory::setContainer($container);
 $app = AppFactory::create();
-$callableResolver = $app->getCallableResolver();
 
-// Register middleware
-$middleware = require __DIR__ . '/../app/middleware.php';
-$middleware($app);
-
-// Register routes
-$routes = require __DIR__ . '/../app/routes.php';
-$routes($app);
-
-/** @var SettingsInterface $settings */
-$settings = $container->get(SettingsInterface::class);
-
-$displayErrorDetails = $settings->get('displayErrorDetails');
-$logError = $settings->get('logError');
-$logErrorDetails = $settings->get('logErrorDetails');
-
-// Create Request object from globals
-$serverRequestCreator = ServerRequestCreatorFactory::create();
-$request = $serverRequestCreator->createServerRequestFromGlobals();
-
-// Create Error Handler
-$responseFactory = $app->getResponseFactory();
-$errorHandler = new HttpErrorHandler($callableResolver, $responseFactory);
-
-// Create Shutdown Handler
-$shutdownHandler = new ShutdownHandler($request, $errorHandler, $displayErrorDetails);
-register_shutdown_function($shutdownHandler);
-
-// Add Routing Middleware
 $app->addRoutingMiddleware();
+$app->add(new BasePathMiddleware($app));
+$app->addErrorMiddleware(true, true, true);
 
-// Add Body Parsing Middleware
-$app->addBodyParsingMiddleware();
+$app->get('/', function (Request $request, Response $response) {
+   $file = './index.html';
+   if (file_exists($file)) {
+	   $response->getBody()->write(file_get_contents($file));
+	   return $response;
+   } else {
+	   throw new HttpNotFoundException($request);
+   }
+});
 
-// Add Error Middleware
-$errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, $logError, $logErrorDetails);
-$errorMiddleware->setDefaultErrorHandler($errorHandler);
+$app->get('/api/events', function (Request $request, Response $response) {
+	$sql = "SELECT * FROM events";
+   
+	try {
+		$db = new Database();
+		$conn = $db->connect();
+		$stmt = $conn->query($sql);
+		$events = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
 
-// Run App & Emit Response
-$response = $app->handle($request);
-$responseEmitter = new ResponseEmitter();
-$responseEmitter->emit($response);
+		$response->getBody()->write(json_encode($events, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+		return $response
+		->withHeader('content-type', 'application/json; charset=UTF-8')
+		->withStatus(200);
+	} catch (PDOException $e) {
+		$error = array(
+		"message" => $e->getMessage()
+		);
+
+		$response->getBody()->write(json_encode($error));
+		return $response
+		->withHeader('content-type', 'application/json; charset=UTF-8')
+		->withStatus(500);
+	}
+});
+
+
+$app->run();

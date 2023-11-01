@@ -5,8 +5,24 @@ volumes:
         driver: local
 
 services:
+    db:
+        image: mysql:8.2
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        volumes:
+        - "./scripts/schema.sql:/docker-entrypoint-initdb.d/0-schema.sql"
+        - "./scripts/data.sql:/docker-entrypoint-initdb.d/1-data.sql"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+        - 8082:8080
+
     familynote:
-        image: php:8-alpine
+        build: .
         working_dir: /var/www
         command: php -S 0.0.0.0:8080 -t public
         environment:
