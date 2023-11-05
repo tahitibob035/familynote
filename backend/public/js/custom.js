@@ -4,15 +4,18 @@ document.getElementById('daily-date').innerHTML=dt
 let events = []
 
 
-async function httpClient(route, method, body = null) {
+async function httpClient(route, method, data = null) {
+  const contentType = method === 'POST' ? 'application/x-www-form-urlencoded' : "application/json"
   const requestOptions = {
     method,
     headers: {
-      Accept: "application/json",
+      'Content-Type': contentType,
     },
     mode: "cors",
-    cache: "no-cache",
-    body
+    cache: "no-cache"
+  }
+  if (method === 'POST') {
+    requestOptions['body'] = new URLSearchParams(data)
   }
   const myRequest = new Request(route, requestOptions)
   try {
@@ -59,8 +62,15 @@ function displayEventsList(events = []) {
   })
 }
 
-async function postEvent(event) {
-  await httpClient("api/events", "POST", JSON.stringify(event))
+async function postEvent() {
+  const eventsForm = document.getElementById('events-form')
+  const event = {
+    label: eventsForm.elements['label'].value,
+    location: eventsForm.elements['location'].value,
+    datetime: eventsForm.elements['datetime'].value,
+  }
+  await httpClient("api/events", "POST", event)
+  getEvents()
 }
 
 // Get events in the app starting

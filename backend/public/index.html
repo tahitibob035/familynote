@@ -37,26 +37,26 @@
             <div class="section no-pad-bot middle">
                 <div id="family-form" class="card container">
                     <div class="row">
-                        <form class="col s12">
+                        <form id="events-form" class="col s12">
                             <div class="row">
                                 <div class="input-field">
                                     <i class="material-icons prefix">event</i>
-                                    <textarea id="icon_event" type="text" placeholder="Exemples: Anniversaire de Matiss, Cousinade etc..." class="materialize-textarea"></textarea>
-                                    <label for="icon_event">Evénement</label>
+                                    <textarea id="label" type="text" placeholder="Exemples: Anniversaire de Matiss, Cousinade etc..." class="materialize-textarea"></textarea>
+                                    <label for="label">Evénement</label>
                                 </div>
                                 <div class="input-field">
                                     <i class="material-icons prefix">schedule</i>
-                                    <input id="icon_when" type="date" class="validate">
-                                    <label for="icon_when">Quand</label>
+                                    <input id="datetime" type="date" class="validate">
+                                    <label for="datetime">Quand</label>
                                 </div>
                                 <div class="input-field">
                                     <i class="material-icons prefix">explore</i>
-                                    <input id="icon_where" type="text" class="validate">
-                                    <label for="icon_where">Où</label>
+                                    <input id="location" type="text" class="validate">
+                                    <label for="location">Où</label>
                                 </div>
                             </div>
                             <div class="center">
-                                <a class="waves-effect waves-light btn-small" onclick="postEvent({test:'sdkgdkhg'})">
+                                <a class="waves-effect waves-light btn-small" onclick="postEvent()">
                                     <i class="material-icons right">save</i>
                                     Sauvegarder
                                 </a>
