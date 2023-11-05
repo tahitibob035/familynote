@@ -2,7 +2,20 @@ const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'num
 const dt = new Date().toLocaleDateString(undefined, dateOptions)
 document.getElementById('daily-date').innerHTML=dt
 let events = []
+const dialog = document.querySelector("dialog")
+const deleteConfirmButton = document.querySelector("#delete-confirm")
+const cancelConfirmButton = document.querySelector("#cancel-confirm")
 
+deleteConfirmButton.addEventListener("click", async () => {
+  const eventIdToDelete = document.getElementById('delete-event-id')
+  const eventId = eventIdToDelete.value
+  await httpClient(`api/events/${eventId}`, "DELETE")
+  getEvents()
+  dialog.close()
+})
+cancelConfirmButton.addEventListener("click", () => {
+  dialog.close()
+})
 
 async function httpClient(route, method, data = null) {
   const contentType = method === 'POST' ? 'application/x-www-form-urlencoded' : "application/json"
@@ -44,8 +57,11 @@ function onSearch(evt) {
 }
 
 async function onDeleteClick(event) {
-  await httpClient(`api/events/${event.id}`, "DELETE")
-  getEvents()
+  const eventIdToDelete = document.getElementById('delete-event-id')
+  eventIdToDelete.value = event.id
+  const eventLabelToDelete = document.getElementById('delete-event-label')
+  eventLabelToDelete.textContent = `Voulez-vous supprimer l'événement '${event.label}'?`
+  dialog.showModal()
 }
 
 function displayEventsList(events = []) {
@@ -76,7 +92,7 @@ function displayEventsList(events = []) {
     deleteElement.textContent = "delete"
     deleteElement.title = "Supprimer l'événement"
     deleteElement.addEventListener('click',   function () {
-      onDeleteClick(element);
+      onDeleteClick(element)
     })
     actionColumnElement.appendChild(deleteElement)
 
