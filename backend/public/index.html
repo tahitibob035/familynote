@@ -70,7 +70,7 @@
                 <div id="family-search" class="card container">
                     <div class="input-field">
                         <i class="material-icons prefix">search</i>
-                        <input id="icon_search" type="text" class="validate">
+                        <input id="icon_search" type="text" class="validate" oninput="onSearch(event)">
                         <label for="icon_search">Rechercher</label>
                     </div>
                 </div>
@@ -84,20 +84,11 @@
                                 <th>Evénement</th>
                                 <th>Quand</th>
                                 <th>Où</th>
+                                <th>Commentaire</th>
                             </tr>
                         </thead>
 
-                        <tbody>
-                            <tr>
-                                <td>Anniversaire de Matiss</td>
-                                <td>31/12/2008</td>
-                                <td>Caen (14000)</td>
-                            </tr>
-                            <tr>
-                                <td>Anniversaire de Matiss</td>
-                                <td>28/11/2015</td>
-                                <td>Rennes (35000)</td>
-                            </tr>
+                        <tbody id="events-list">
                         </tbody>
                     </table>
                 </div>
