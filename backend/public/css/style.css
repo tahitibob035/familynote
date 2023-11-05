@@ -36,6 +36,25 @@
   padding-bottom: 2.5rem;    /* Footer height */
 }
 
+/* Events list */
+.datetime-column {
+  width: 10%;
+  /* max-width: 140px; */
+}
+.action-column {
+  width: 10%;
+}
+.label-column {
+  width: 40%;
+}
+.location-column {
+  width: 40%;
+}
+
+.delete-button {
+  cursor: pointer;
+}
+
 #footer {
   position: absolute;
   bottom: 0;

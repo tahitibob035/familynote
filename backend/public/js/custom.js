@@ -43,8 +43,13 @@ function onSearch(evt) {
   }))
 }
 
+async function onDeleteClick(event) {
+  await httpClient(`api/events/${event.id}`, "DELETE")
+  getEvents()
+}
+
 function displayEventsList(events = []) {
-  const columnsToHide = ['id', 'file']
+  const columnsToHide = ['id', 'file', 'description']
   const eventsElement = document.getElementById('events-list')
   eventsElement.textContent = ''
   events.forEach(element => {
@@ -52,12 +57,31 @@ function displayEventsList(events = []) {
     Object.keys(element).filter(name => !columnsToHide.includes(name))
       .forEach(name => {
         const columnElement = document.createElement('td')
+        columnElement.className = `${name}-column`
         if (element[name]) {
-          const columnContent = document.createTextNode(element[name])
+          // Specific Date format
+          const text = name === 'datetime' ? new Date(element[name]).toLocaleString().slice(0,10): element[name]
+
+          const columnContent = document.createTextNode(text)
           columnElement.appendChild(columnContent)
         }
         eventElement.appendChild(columnElement)
     })
+
+    // Action Column
+    const actionColumnElement = document.createElement('td')
+    eventElement.className = 'action-column'
+    const deleteElement = document.createElement('i')
+    deleteElement.className = "material-icons prefix delete-button"
+    deleteElement.textContent = "delete"
+    deleteElement.title = "Supprimer l'événement"
+    deleteElement.addEventListener('click',   function () {
+      onDeleteClick(element);
+    })
+    actionColumnElement.appendChild(deleteElement)
+
+    eventElement.appendChild(actionColumnElement)
+
     eventsElement.appendChild(eventElement)
   })
 }

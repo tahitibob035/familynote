@@ -103,4 +103,31 @@ $app->post('/api/events', function (Request $request, Response $response) {
 });
 
 
+$app->delete('/api/events/{id}', function (Request $request, Response $response, array $args) {
+	$id = $args["id"];
+	$sql = "DELETE FROM events WHERE id = $id";
+	try {
+		$db = new Database();
+		$conn = $db->connect();
+	   
+		$stmt = $conn->prepare($sql);
+		$result = $stmt->execute();
+	 
+		$db = null;
+		$response->getBody()->write(json_encode($result));
+		return $response
+		  ->withHeader('content-type', 'application/json')
+		  ->withStatus(200);
+	  } catch (PDOException $e) {
+		$error = array(
+		  "message" => $e->getMessage()
+		);
+	 
+		$response->getBody()->write(json_encode($error));
+		return $response
+		  ->withHeader('content-type', 'application/json')
+		  ->withStatus(500);
+	  }
+});
+
 $app->run();
