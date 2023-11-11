@@ -33,7 +33,7 @@
 }
 
 #content-wrap {
-  padding-bottom: 2.5rem;    /* Footer height */
+  padding-bottom: 2.5rem;
 }
 
 /* Form */
@@ -44,7 +44,6 @@
 /* Events list */
 .datetime-column {
   width: 10%;
-  /* max-width: 140px; */
 }
 .action-column {
   width: 10%;
