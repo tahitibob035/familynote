@@ -69,3 +69,10 @@
   height: 100%;
   margin: 0;
 }
+
+#toast-container {
+  top: auto !important;
+  left: auto !important;
+  bottom: 10%;
+  right:7%;  
+}

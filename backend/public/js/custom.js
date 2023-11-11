@@ -6,16 +6,17 @@ const dialog = document.querySelector("dialog")
 const deleteConfirmButton = document.querySelector("#delete-confirm")
 const cancelConfirmButton = document.querySelector("#cancel-confirm")
 
-deleteConfirmButton.addEventListener("click", async () => {
+async function deletEvent() {
   const eventIdToDelete = document.getElementById('delete-event-id')
   const eventId = eventIdToDelete.value
   await httpClient(`api/events/${eventId}`, "DELETE")
   getEvents()
   dialog.close()
-})
-cancelConfirmButton.addEventListener("click", () => {
-  dialog.close()
-})
+  M.toast({html: 'Evénement supprimé.'})
+} 
+
+deleteConfirmButton.addEventListener("click", deletEvent)
+cancelConfirmButton.addEventListener("click", () => dialog.close())
 
 async function httpClient(route, method, data = null) {
   const contentType = method === 'POST' ? 'application/x-www-form-urlencoded' : "application/json"
@@ -33,9 +34,15 @@ async function httpClient(route, method, data = null) {
   const myRequest = new Request(route, requestOptions)
   try {
       const response = await fetch(myRequest, requestOptions)
-      return await response.json()
+      const responseJson = await response.json()
+      if (response.status !== 200) {
+        M.toast({html: `Error: ${responseJson.message}`})
+        return null
+      }
+      return responseJson
   } catch (error) {
       console.error(error)
+      M.toast({html: `Error: ${error}`})
       return null
   }
 }
@@ -104,13 +111,52 @@ function displayEventsList(events = []) {
 
 async function postEvent() {
   const eventsForm = document.getElementById('events-form')
+  const label = eventsForm.elements['label'].value
   const event = {
     label: eventsForm.elements['label'].value,
     location: eventsForm.elements['location'].value,
     datetime: eventsForm.elements['datetime'].value,
   }
-  await httpClient("api/events", "POST", event)
-  getEvents()
+  const response = await httpClient("api/events", "POST", event)
+  if (response !== null) {
+    M.toast({html: `Nouvel événement ajouté: '${label}'`})
+    getEvents()
+    const resetButton = document.getElementById('reset-button')
+    resetButton.click()
+  }
+}
+
+function resetForm() {
+  const labelInput = document.getElementById('label')
+  labelInput.focus()
+  const eventsForm = document.getElementById('events-form')
+  const inputFields = document.getElementsByClassName('form-input')
+  for(field of inputFields) {
+    field.classList.remove('active')
+    field.value = ''
+  }
+  disableValidateButton()
+  eventsForm.reset()
+
+}
+
+function disableValidateButton() {
+  const eventsForm = document.getElementById('events-form')
+  const validateButton = document.getElementById('validate-button')
+  if (eventsForm.checkValidity()) {
+    validateButton.removeAttribute('disabled')
+  } else {
+    validateButton.setAttribute('disabled', '')
+  }
+}
+
+function onFormKeyUp(event) {
+  if (event.key === 'Enter') {
+    const eventsForm = document.getElementById('events-form')
+    if (eventsForm.checkValidity()) {
+      postEvent()
+    }
+  }
 }
 
 // Get events in the app starting

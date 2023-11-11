@@ -17,7 +17,7 @@
         <div id="content-wrap">
             <!-- all other page content -->
 
-            <div id="header" class="light-blue middle">
+            <div id="header" class="teal middle">
                 <img src="img/lion.svg" alt="Family Note" width="60px" />
                 <h4 class="white-text">Lion Family Notes</h4>
                 <img src="img/lion.svg" alt="Family Note" width="60px" />
@@ -37,28 +37,32 @@
             <div class="section no-pad-bot middle">
                 <div id="family-form" class="card container">
                     <div class="row">
-                        <form id="events-form" class="col s12">
+                        <form id="events-form" class="col s12" oninput="disableValidateButton()" onkeyup="onFormKeyUp(event)">
                             <div class="row">
                                 <div class="input-field">
                                     <i class="material-icons prefix">event</i>
-                                    <textarea id="label" type="text" placeholder="Exemples: Anniversaire de Matiss, Cousinade etc..." class="materialize-textarea"></textarea>
-                                    <label for="label">Evénement</label>
+                                    <input id="label" type="text" placeholder="Exemples: Anniversaire de Matiss, Cousinade etc..." class="validate form-input" required/>
+                                    <label for="label">Description de l'événement</label>
                                 </div>
                                 <div class="input-field">
                                     <i class="material-icons prefix">schedule</i>
-                                    <input id="datetime" type="date" class="validate">
-                                    <label for="datetime">Quand</label>
+                                    <input id="datetime" type="date" class="validate form-input" required/>
+                                    <label for="datetime">Date</label>
                                 </div>
                                 <div class="input-field">
                                     <i class="material-icons prefix">explore</i>
-                                    <input id="location" type="text" class="validate">
+                                    <input id="location" type="text" class="validate form-input" required/>
                                     <label for="location">Où</label>
                                 </div>
                             </div>
                             <div class="center">
-                                <a class="waves-effect waves-light btn-small" onclick="postEvent()">
+                                <a disabled id="validate-button" class="waves-effect waves-light btn-small" onclick="postEvent()">
                                     <i class="material-icons right">save</i>
                                     Sauvegarder
+                                </a>
+                                <a id="reset-button" class="waves-effect waves-light btn-small cyan" onclick="resetForm()">
+                                    <i class="material-icons right">replay</i>
+                                    Reset
                                 </a>
                             </div>
                         </form>
@@ -70,8 +74,8 @@
                 <div id="family-search" class="card container">
                     <div class="input-field">
                         <i class="material-icons prefix">search</i>
-                        <input id="icon_search" type="text" class="validate" oninput="onSearch(event)">
-                        <label for="icon_search">Rechercher</label>
+                        <input id="search_icon" type="text" class="validate" oninput="onSearch(event)">
+                        <label for="search_icon">Rechercher</label>
                     </div>
                 </div>
             </div>
@@ -94,22 +98,24 @@
                 </div>
             </div>
         </div>
-        <footer id="footer" class="light-blue middle">
+        <footer id="footer" class="teal middle">
             <p>- © 2023 Lion Family -</p>
         </footer>
     </div>
 
-    <dialog>
-        <p id="delete-event-label"></p>
-        <input type="hidden" id="delete-event-id">
-        <div class="middle">
-            <a id="delete-confirm" class="waves-effect waves-light btn-small">
-                <i class="material-icons right">delete</i>
-                Supprimer
-            </a>
-            <a id="cancel-confirm" class="btn-small">
-                Annuler
-            </a>
+    <dialog onkeyup="deletEvent()">
+        <div>
+            <p id="delete-event-label"></p>
+            <input type="hidden" id="delete-event-id">
+            <div class="middle">
+                <a id="delete-confirm" class="waves-effect waves-light btn-small">
+                    <i class="material-icons right">delete</i>
+                    Supprimer
+                </a>
+                <a id="cancel-confirm" class="waves-effect waves-light btn-small cyan">
+                    Non
+                </a>
+            </div>
         </div>
     </dialog>
 
