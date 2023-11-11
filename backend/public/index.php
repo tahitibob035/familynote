@@ -102,6 +102,58 @@ $app->post('/api/events', function (Request $request, Response $response) {
 	}
 });
 
+$app->put('/api/events/{id}', function (Request $request, Response $response, array $args) {
+	try {
+		$id = $args["id"];
+
+		$data = $request->getParsedBody();
+		assert($data['label'] != '', "Expected label parameter");
+		assert($data['datetime'] != '', "Expected datetime parameter");
+		assert($data['location'] != '', "Expected location parameter");
+		assert($id != '', "Expected id query param");
+
+	} catch (AssertionError $e) {
+		$error = array(
+			"message" => $e->getMessage()
+			);
+	
+			$response->getBody()->write(json_encode($error));
+			return $response
+			->withHeader('content-type', 'application/json; charset=UTF-8')
+			->withStatus(400);
+	}
+	
+	try {
+		
+		$db = new Database();
+		$conn = $db->connect();
+		$sql = "UPDATE events SET label = :label, datetime = :datetime, location = :location WHERE id = :id";
+		$stmt = $conn->prepare($sql);
+
+		$stmt->bindParam(':label', $data['label']);
+		$stmt->bindParam(':datetime', $data['datetime']);
+		$stmt->bindParam(':location', $data['location']);
+		$stmt->bindParam(':id', $id);
+		$result = $stmt->execute();
+		$stmt->closeCursor();
+
+		$db = null;
+
+		$response->getBody()->write(json_encode($data));
+		return $response
+		->withHeader('content-type', 'application/json; charset=UTF-8')
+		->withStatus(200);
+	} catch (PDOException $e) {
+		$error = array(
+		"message" => $e->getMessage()
+		);
+
+		$response->getBody()->write(json_encode($error));
+		return $response
+		->withHeader('content-type', 'application/json; charset=UTF-8')
+		->withStatus(500);
+	}
+});
 
 $app->delete('/api/events/{id}', function (Request $request, Response $response, array $args) {
 	$id = $args["id"];

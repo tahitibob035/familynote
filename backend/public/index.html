@@ -36,9 +36,11 @@
 
             <div class="section no-pad-bot middle">
                 <div id="family-form" class="card container">
+                    <span id="form-title" class="card-title">Créer un nouvel événement</span>
                     <div class="row">
-                        <form id="events-form" class="col s12" oninput="disableValidateButton()" onkeyup="onFormKeyUp(event)">
+                        <form id="events-form" class="events-form col s12" oninput="disableValidateButton()" onkeyup="onFormKeyUp(event)">
                             <div class="row">
+                                <input id="id" type="hidden"/>
                                 <div class="input-field">
                                     <i class="material-icons prefix">event</i>
                                     <input id="label" type="text" placeholder="Exemples: Anniversaire de Matiss, Cousinade etc..." class="validate form-input" required/>
@@ -56,7 +58,7 @@
                                 </div>
                             </div>
                             <div class="center">
-                                <a disabled id="validate-button" class="waves-effect waves-light btn-small" onclick="postEvent()">
+                                <a disabled id="validate-button" class="waves-effect waves-light btn-small" onclick="saveEvent()">
                                     <i class="material-icons right">save</i>
                                     Sauvegarder
                                 </a>
