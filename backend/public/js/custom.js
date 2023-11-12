@@ -1,6 +1,6 @@
 const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 const dailyDate = new Date().toLocaleDateString(undefined, dateOptions)
-document.getElementById('daily-date').innerHTML=`Evénements du ${dailyDate}`
+document.getElementById('daily-date').innerHTML=`Evènements du ${dailyDate}`
 document.getElementById('copyright').textContent = `© ${new Date().toISOString().slice(0,4)} Lion Family Notes`
 let events = []
 const dialog = document.querySelector("dialog")
@@ -13,7 +13,7 @@ async function deletEvent() {
   await httpClient(`api/events/${eventId}`, "DELETE")
   getEvents()
   dialog.close()
-  M.toast({html: 'Evénement supprimé.'})
+  M.toast({html: 'Evènement supprimé.'})
 } 
 
 deleteConfirmButton.addEventListener("click", deletEvent)
@@ -69,7 +69,7 @@ async function onDeleteClick(event) {
   const eventIdToDelete = document.getElementById('delete-event-id')
   eventIdToDelete.value = event.id
   const eventLabelToDelete = document.getElementById('delete-event-label')
-  eventLabelToDelete.textContent = `Voulez-vous supprimer l'événement '${event.label}'?`
+  eventLabelToDelete.textContent = `Voulez-vous supprimer l'évènement '${event.label}'?`
   dialog.showModal()
 }
 
@@ -83,7 +83,7 @@ async function onEditClick(event) {
     input.focus()
   })
   const formTitle = document.getElementById('form-title')
-  formTitle.textContent = `Modifier l'événement '${event.label}'`
+  formTitle.textContent = `Modifier l'évènement '${event.label}'`
   disableValidateButton()
 }
 
@@ -119,7 +119,7 @@ function displayEventsList(events = []) {
     const editElement = document.createElement('i')
     editElement.className = "material-icons prefix edit-button"
     editElement.textContent = "edit"
-    editElement.title = "Editer l'événement"
+    editElement.title = "Editer l'évènement"
     editElement.addEventListener('click',   function () {
       onEditClick(element)
     })
@@ -129,7 +129,7 @@ function displayEventsList(events = []) {
     const deleteElement = document.createElement('i')
     deleteElement.className = "material-icons prefix delete-button"
     deleteElement.textContent = "delete"
-    deleteElement.title = "Supprimer l'événement"
+    deleteElement.title = "Supprimer l'évènement"
     deleteElement.addEventListener('click',   function () {
       onDeleteClick(element)
     })
@@ -153,7 +153,7 @@ function displayDailyEvent(events) {
     }
   })
   if (todayEvent === null) {
-    dailyList.textContent = "Aucun événement aujourd'hui."
+    dailyList.textContent = "Aucun évènement aujourd'hui."
   }
 }
 
@@ -169,10 +169,10 @@ async function saveEvent() {
   if (eventsForm.elements['id'].value) {
     event.id = eventsForm.elements['id'].value
     response = await httpClient(`api/events/${event.id}`, "PUT", event)
-    bottomMessage = `Evénement '${label}' sauvegardé.`
+    bottomMessage = `Evènement '${label}' sauvegardé.`
   } else {
     response = await httpClient("api/events", "POST", event)
-    bottomMessage = `Nouvel événement ajouté: '${label}'`
+    bottomMessage = `Nouvel évènement ajouté: '${label}'`
   }
   if (response !== null) {
     M.toast({html: bottomMessage}) // non-passive event listener warning in console
@@ -193,7 +193,7 @@ function resetForm() {
   disableValidateButton()
   eventsForm.reset()
   const formTitle = document.getElementById('form-title')
-  formTitle.textContent = 'Créer un nouvel événement'
+  formTitle.textContent = 'Créer un nouvel évènement'
 }
 
 function disableValidateButton() {
