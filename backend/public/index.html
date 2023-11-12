@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Family Note</title>
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -13,23 +13,42 @@
 
 <body>
 
+    <nav class="teal" role="navigation">
+        <div class="nav-wrapper container">
+          <a id="logo-container" href="#" class="brand-logo">Lion Family Notes</a>
+          <ul class="right hide-on-med-and-down">
+            <li><a href="#"></a></li>
+          </ul>
+    
+          <ul id="nav-mobile" class="sidenav">
+            <li><a href="#"></a></li>
+          </ul>
+          <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        </div>
+    </nav>
+    <div class="parallax">
+        <div class="daily-container">
+            <div class="card daily-card">
+                <div class="icon-block">
+                    <h5 id="daily-date" class="center"></h5>
+                    <div id="daily-event" class="daily-list light"></div>
+                </div>
+                <br/>
+                <div class="input-field">
+                    <i class="material-icons prefix">search</i>
+                    <input id="search_icon" type="text" class="validate" oninput="onSearch(event)" onkeyup="onSearchKeyUp(event)">
+                    <label for="search_icon">Rechercher</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="page-container">
         <div id="content-wrap">
-            <!-- all other page content -->
-
-            <div id="header" class="teal middle">
-                <img src="img/lion.svg" alt="Family Note" width="60px" />
-                <h4 class="white-text">Lion Family Notes</h4>
-                <img src="img/lion.svg" alt="Family Note" width="60px" />
-            </div>
 
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <div class="icon-block">
-                            <h5 id="daily-date" class="center"></h5>
-                            <div id="daily-event" class="daily-list light"></div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -73,18 +92,8 @@
             </div>
 
             <div class="section no-pad-bot middle">
-                <div id="family-search" class="card container">
-                    <div class="input-field">
-                        <i class="material-icons prefix">search</i>
-                        <input id="search_icon" type="text" class="validate" oninput="onSearch(event)">
-                        <label for="search_icon">Rechercher</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="section no-pad-bot middle">
                 <div class="card container">
-                    <table class="striped centered">
+                    <table tabindex="-1" id="events-table" class="striped centered">
                         <thead>
                             <tr>
                                 <th class="label-column">Evénement</th>
@@ -104,7 +113,10 @@
             <a class="btn-floating waves-effect waves-light" onclick="resetForm()"><i class="material-icons">add</i></a>
         </div>
         <footer id="footer" class="teal middle">
-            <p>- © 2023 Lion Family -</p>
+            <div class="copyright"><img src="img/lion.svg" alt="Family Note" width="30px" />
+            © 2023 Lion Family Notes
+            <img src="img/lion.svg" alt="Family Note" width="30px" />
+            </div>
         </footer>
     </div>
 

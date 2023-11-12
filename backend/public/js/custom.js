@@ -214,5 +214,11 @@ function onFormKeyUp(event) {
   }
 }
 
+function onSearchKeyUp(event) {
+  if (event.key === 'Enter') {
+    const eventsList = document.getElementById('events-table')
+    eventsList.focus()
+  }
+}
 // Get events in the app starting
 getEvents()
