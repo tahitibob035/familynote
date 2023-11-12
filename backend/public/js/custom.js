@@ -1,6 +1,7 @@
 const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 const dailyDate = new Date().toLocaleDateString(undefined, dateOptions)
 document.getElementById('daily-date').innerHTML=`Evénements du ${dailyDate}`
+document.getElementById('copyright').textContent = `© ${new Date().toISOString().slice(0,4)} Lion Family Notes`
 let events = []
 const dialog = document.querySelector("dialog")
 const deleteConfirmButton = document.querySelector("#delete-confirm")
