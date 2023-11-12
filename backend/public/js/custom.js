@@ -206,6 +206,7 @@ function resetForm() {
   eventsForm.reset()
   const formTitle = document.getElementById('form-title')
   formTitle.textContent = 'Créer un nouvel évènement'
+  eventsForm.scrollIntoView()
 }
 
 function disableValidateButton() {
@@ -231,6 +232,7 @@ function onSearchKeyUp(event) {
   if (event.key === 'Enter') {
     const eventsList = document.getElementById('events-table')
     eventsList.focus()
+    eventsList.scrollIntoView()
   }
 }
 // Get events in the app starting
