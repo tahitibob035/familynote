@@ -1,8 +1,19 @@
-const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+// Date now
+let dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+const nowElement = document.getElementById('now-date')
+nowElement.textContent = new Date().toLocaleDateString(undefined, dateOptions)
+
+// Daily date
+dateOptions = { month: 'long', day: 'numeric' }
 const dailyDate = new Date().toLocaleDateString(undefined, dateOptions)
 document.getElementById('daily-date').innerHTML=`Evènements du ${dailyDate}`
+
+// Copyright
 document.getElementById('copyright').textContent = `© ${new Date().toISOString().slice(0,4)} Lion Family Notes`
+
 let events = []
+
+// Delete dialog
 const dialog = document.querySelector("dialog")
 const deleteConfirmButton = document.querySelector("#delete-confirm")
 const cancelConfirmButton = document.querySelector("#cancel-confirm")
@@ -19,6 +30,7 @@ async function deletEvent() {
 deleteConfirmButton.addEventListener("click", deletEvent)
 cancelConfirmButton.addEventListener("click", () => dialog.close())
 
+// Common http client method
 async function httpClient(route, method, data = null) {
   const contentType = (method === 'POST' || method === 'PUT') ? 'application/x-www-form-urlencoded' : "application/json"
   const requestOptions = {
@@ -153,7 +165,7 @@ function displayDailyEvent(events) {
     }
   })
   if (todayEvent === null) {
-    dailyList.textContent = "Aucun évènement aujourd'hui."
+    dailyList.textContent = "Aucun évènement trouvé."
   }
 }
 

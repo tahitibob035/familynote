@@ -24,7 +24,20 @@
   min-height: 100vh;
 }
 
-/* header */
+/* now Date */
+@media screen and (min-width: 600px) {
+  .now-date {
+    position: absolute;
+    right: 2px;
+    top: 42px;
+    color: white;
+  }
+}
+@media screen and (max-width: 599px) {
+  .now-date {
+    display: none;
+  }
+}
 body, html {
   height: 100%;
 }
@@ -112,5 +125,5 @@ body, html {
   top: auto !important;
   left: auto !important;
   bottom: 10%;
-  right:10%;  
+  right: 10%;  
 }
