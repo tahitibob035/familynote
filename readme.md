@@ -13,6 +13,7 @@
 - [x] Search Input
 - [x] Daily Event
 - [ ] Add Login/password
+- [ ] Improve location input
 - [x] Add form checks
 - [x] Add error message
 - [ ] Refacto UI/Design
