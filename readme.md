@@ -14,6 +14,7 @@
 - [x] Daily Event
 - [ ] Add Login/password
 - [ ] Improve location input
+- [ ] Add files to an event
 - [x] Add form checks
 - [x] Add error message
 - [ ] Refacto UI/Design
