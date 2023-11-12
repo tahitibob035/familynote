@@ -11,7 +11,7 @@
 - [x] EDIT Event
 - [x] DELETE Event
 - [x] Search Input
-- [ ] Today Event
+- [x] Daily Event
 - [ ] Add Login/password
 - [x] Add form checks
 - [x] Add error message

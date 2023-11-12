@@ -36,6 +36,13 @@
   padding-bottom: 2.5rem;
 }
 
+/* Daily List */
+.daily-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
 /* Form */
 .events-form {
   margin-top: 20px;

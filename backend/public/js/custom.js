@@ -1,6 +1,6 @@
 const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
-const dt = new Date().toLocaleDateString(undefined, dateOptions)
-document.getElementById('daily-date').innerHTML=dt
+const dailyDate = new Date().toLocaleDateString(undefined, dateOptions)
+document.getElementById('daily-date').innerHTML=`Evénements du ${dailyDate}`
 let events = []
 const dialog = document.querySelector("dialog")
 const deleteConfirmButton = document.querySelector("#delete-confirm")
@@ -50,6 +50,7 @@ async function httpClient(route, method, data = null) {
 async function getEvents() {
   events = await httpClient("api/events", "GET")
   displayEventsList(events)
+  displayDailyEvent(events)
 }
 
 function onSearch(evt) {
@@ -137,6 +138,22 @@ function displayEventsList(events = []) {
 
     eventsElement.appendChild(eventElement)
   })
+}
+
+function displayDailyEvent(events) {
+  const dailyList = document.getElementById('daily-event')
+  dailyList.textContent= ''
+  let todayEvent = null
+  events.forEach(event => {
+    if (event.datetime.slice(4,10) === new Date().toISOString().slice(4,10)) {
+      todayEvent = document.createElement('li')
+      todayEvent.textContent = `${event.label} (${event.location} le ${new Date(event.datetime).toLocaleDateString(undefined, dateOptions)}})`
+      dailyList.appendChild(todayEvent)
+    }
+  })
+  if (todayEvent === null) {
+    dailyList.textContent = "Aucun événement aujourd'hui."
+  }
 }
 
 async function saveEvent() {
